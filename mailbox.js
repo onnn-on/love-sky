@@ -1,7 +1,7 @@
 import { supabase } from "./supabase.js";
 import { getUser } from "./auth.js";
 
-const ADMIN_ID = "你的管理员用户UUID";
+const ADMIN_ID = "823ceb94-1e2b-49b6-81a5-681c922f9e20";
 
 async function sendNew() {
   const user = await getUser();
