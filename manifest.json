@@ -1,0 +1,12 @@
+{
+  "name": "陆雪怡 · 星空",
+  "short_name": "LoveSky",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020308",
+  "theme_color": "#020308",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192" },
+    { "src": "icon-512.png", "sizes": "512x512" }
+  ]
+}

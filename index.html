@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陆雪怡 · 星空</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <canvas id="sky"></canvas>
+  <div id="aurora"></div>
+
+  <!-- 未登录时显示 -->
+  <div id="auth-box" class="box" style="display:none;">
+    <h1>🌌 登陆星空</h1>
+    <input type="email" id="email" placeholder="邮箱">
+    <input type="password" id="password" placeholder="密码">
+    <button id="loginBtn">登录</button>
+    <button id="registerBtn">注册</button>
+    <p id="auth-msg"></p>
+  </div>
+
+  <!-- 已登录时显示 -->
+  <div id="home" class="home" style="display:none;">
+    <h1>陆雪怡</h1>
+    <p class="sub">只属于你的星空</p>
+    <div class="star-info">
+      <div>⭐ 今日星星 <span id="stars">---</span></div>
+      <div>🌌 极光概率 <span id="chance">---</span></div>
+      <div>🌙 夜晚状态 <span id="night">---</span></div>
+    </div>
+    <p class="words">我希望以后我们能克服万难一直在一起</p>
+    <div class="menu" id="menu">
+      <!-- 根据角色动态生成 -->
+    </div>
+    <button id="logoutBtn" style="margin-top:20px;">退出星空</button>
+  </div>
+
+  <script src="stars.js"></script>
+  <script src="aurora.js"></script>
+  <script type="module">
+    import { getUser, getUserRole, logout } from "./auth.js";
+
+    const user = await getUser();
+    const authBox = document.getElementById("auth-box");
+    const home = document.getElementById("home");
+    const menu = document.getElementById("menu");
+
+    if (!user) {
+      authBox.style.display = "block";
+      home.style.display = "none";
+    } else {
+      authBox.style.display = "none";
+      home.style.display = "block";
+      const role = await getUserRole();
+      let menuHTML = `
+        <a href="mailbox.html">💌 信箱</a>
+        <a href="capsule.html">⏳ 时间胶囊</a>
+        <a href="music.html">🎵 星空音乐</a>
+      `;
+      if (role === "admin") {
+        menuHTML += `<a href="terminal.html">🖥 Terminal</a>`;
+      }
+      menu.innerHTML = menuHTML;
+    }
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const { login } = await import("./auth.js");
+        await login(email, password);
+        window.location.reload();
+      } catch (e) {
+        document.getElementById("auth-msg").innerText = e.message;
+      }
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const { register } = await import("./auth.js");
+        await register(email, password);
+        alert("注册成功，请检查邮箱验证（若开启）");
+      } catch (e) {
+        document.getElementById("auth-msg").innerText = e.message;
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await logout();
+      window.location.reload();
+    });
+
+    if (window.todaySky) window.todaySky();
+  </script>
+</body>
+</html>

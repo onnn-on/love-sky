@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>💌 信箱</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="box">
+    <h1>💌 私人信箱</h1>
+    <div class="compose">
+      <h3>写信给陆雪怡</h3>
+      <textarea id="newContent" placeholder="写下想告诉他的事情..."></textarea>
+      <button onclick="sendNew()">发送</button>
+    </div>
+    <hr>
+    <h3>收到的信</h3>
+    <div id="messages">加载中...</div>
+  </div>
+
+  <script type="module" src="mailbox.js"></script>
+</body>
+</html>
